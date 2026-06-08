@@ -1,20 +1,27 @@
 import math
 
-def convert_yards_to_feet(yards):
+def convert_yards_to_feet(yards: float) -> float:
     """Конвертирует ярды в футы (1 ярд = 3 фута)."""
-    return yards * 3
+    return yards * 3.0
 
-def convert_miles_per_hour_to_feet_per_second(miles_per_hour):
+def convert_mph_to_fps(miles_per_hour: float) -> float:
     """
     Конвертирует мили в час в футы в секунду.
     1 миля = 5280 футов, 1 час = 3600 секунд.
     """
-    feet_per_hour = miles_per_hour * 5280
-    return feet_per_hour / 3600
+    feet_per_hour = miles_per_hour * 5280.0
+    return feet_per_hour / 3600.0
 
-def calculate_rescue_time(d1_yards, d2_feet, h_yards, v_sand_mph, n, theta1_degrees):
+def calculate_rescue_time(
+    d1_yards: float,
+    d2_feet: float,
+    h_yards: float,
+    v_sand_mph: float,
+    n: float,
+    theta1_degrees: float
+) -> tuple[float, int]:
     """
-    Рассчитывает общее время, необходимое спасателю для достижения утопающего.
+    Рассчитывает общее время (в секундах), необходимое спасателю для достижения утопающего и округлённый угол (в градусах).
 
     Параметры:
     - d1_yards: расстояние от спасателя до кромки воды (ярды)
@@ -34,21 +41,17 @@ def calculate_rescue_time(d1_yards, d2_feet, h_yards, v_sand_mph, n, theta1_degr
     h_feet = convert_yards_to_feet(h_yards)
 
     # Конвертируем скорость из миль/час в футы/секунду
-    v_sand_fps = convert_miles_per_hour_to_feet_per_second(v_sand_mph)
-
-    # Скорость в воде (меньше из‑за коэффициента замедления)
+    v_sand_fps = convert_mph_to_fps(v_sand_mph)
     v_water_fps = v_sand_fps / n
 
-    # Конвертируем угол из градусов в радианы для тригонометрических функций
+    # Угол в радианах
     theta1_radians = math.radians(theta1_degrees)
 
-    # Рассчитываем x — горизонтальное расстояние по песку до точки входа в воду
+    # Горизонтальное расстояние по песку до точки входа в воду
     x = d1_feet * math.tan(theta1_radians)
 
-    # Рассчитываем D1 — расстояние по песку
+    # Расстояния D1 (по песку) и D2 (вплавь)
     D1 = math.sqrt(d1_feet ** 2 + x ** 2)
-
-    # Рассчитываем D2 — расстояние вплавь
     D2 = math.sqrt((h_feet - x) ** 2 + d2_feet ** 2)
 
     # Общее время: время по песку + время в воде
