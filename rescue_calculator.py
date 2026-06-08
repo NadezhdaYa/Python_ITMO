@@ -12,16 +12,17 @@ def convert_mph_to_fps(miles_per_hour: float) -> float:
     feet_per_hour = miles_per_hour * 5280.0
     return feet_per_hour / 3600.0
 
-def calculate_rescue_time(
+def calculate_time_for_angle(
     d1_yards: float,
     d2_feet: float,
     h_yards: float,
     v_sand_mph: float,
     n: float,
     theta1_degrees: float
-) -> tuple[float, int]:
+) -> float:
     """
-    Рассчитывает общее время (в секундах), необходимое спасателю для достижения утопающего и округлённый угол (в градусах).
+    Рассчитывает время достижения утопающего для конкретного угла theta1.
+    Возвращает только время (в секундах).
 
     Параметры:
     - d1_yards: расстояние от спасателя до кромки воды (ярды)
@@ -56,8 +57,4 @@ def calculate_rescue_time(
 
     # Общее время: время по песку + время в воде
     time_seconds = (D1 / v_sand_fps) + (D2 / v_water_fps)
-
-    # Округление угла до целого числа
-    theta1_int = int(round(theta1_degrees))
-
-    return time_seconds, theta1_int
+    return time_seconds
